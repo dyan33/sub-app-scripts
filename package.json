@@ -1,0 +1,15 @@
+{
+  "name": "sub-app-scripts",
+  "version": "1.0.0",
+  "description": "订阅自动化脚本",
+  "main": "example.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DCG",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "puppeteer-core": "^1.17.0"
+  }
+}

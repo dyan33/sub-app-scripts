@@ -1,0 +1,9 @@
+奥地利 A1 http://nat.allcpx.com/sub/start?affName=DCG&type=at_ifunny_155&clickId=
+
+西班牙 Orange http://offer.allcpx.com/offer/track?offer=271&clickId={click_id}&pubId={pub_id}&o={other_data}
+
+英国 AOC Vodafone http://mguk.foxseek.com/to/aoc?sid=889&f=304&c={device_id}
+
+英国 LP   Vodafone http://offer.allcpx.com/offer/track?offer=304&clickId={click_id}&pubId={pub_id}
+
+英国 Three http://mguk.foxseek.com/to/aoc?sid=889&f=305&c={device_id}
