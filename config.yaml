@@ -1,0 +1,19 @@
+server: [8010]
+proxy: [8020,8021,8022,8023,8024]
+
+hosts: ["www.google.es","accounts.google.com","www.gstatic.com","clients1.google.com"]
+
+
+scripts:
+
+  #西班牙 orange
+  "21403":
+    exe: "/usr/local/bin/node"
+    dir: "/home/ubuntu/app/sub-app-scripts"
+    name: "orange.js"
+
+  #英国 vodafone
+  "23415":
+    exe: "/usr/local/bin/node"
+    dir: "/home/ubuntu/app/sub-app-scripts"
+    name: "uk_vodafone.js"
