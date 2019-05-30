@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
 const devices = require("puppeteer/DeviceDescriptors");
+const process = require("process");
 
 class Mobile {
   constructor(browser, page, client) {
@@ -63,12 +64,23 @@ class Mobile {
   }
 }
 
-exports.start = async function(params) {
+exports.start = async function (params) {
   const browser = await puppeteer.launch(params);
   // const context = await browser.createIncognitoBrowserContext();
 
   // const page = await context.newPage();
   const [page] = await browser.pages();
+
+  page.on("response", (response) => {
+
+    let code = response.status();
+
+    if (code === 555) {
+      console.log("主动中断脚本执行!")
+      process.exit(0)
+    }
+
+  })
 
   await page.emulate(devices["Nexus 5"]);
 
