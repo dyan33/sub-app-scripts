@@ -17,3 +17,9 @@ scripts:
     exe: "/usr/local/bin/node"
     dir: "/home/ubuntu/app/sub-app-scripts"
     name: "uk_vodafone.js"
+  
+  #测试
+  "test":
+    exe: "/usr/local/bin/node"
+    dir: "/home/ubuntu/app/sub-app-scripts"
+    name: "test.js"

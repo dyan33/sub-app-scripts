@@ -7,7 +7,7 @@ const util = require("./common/util");
   const info = util.info();
 
   const m = await mobile.start({
-    headless: true,
+    headless: false,
     devtools: false,
     ignoreHTTPSErrors: true,
     env: {
