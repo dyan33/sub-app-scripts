@@ -1,12 +1,14 @@
 const puppeteer = require("puppeteer");
 const devices = require("puppeteer/DeviceDescriptors");
 const process = require("process");
+const axios = require("axios");
 
 class Mobile {
-  constructor(browser, page, client) {
+  constructor(browser, page, client, proxy) {
     this._browser = browser;
     this._page = page;
     this._client = client;
+    this._proxy = proxy;
   }
 
   //屏幕方向
@@ -62,29 +64,48 @@ class Mobile {
   async close() {
     await this._browser.close();
   }
+
+  async sms(callback) {
+    let resp = await axios.get("http://sms", { proxy: this._proxy, timeout: 60 * 1000 });
+    callback(resp.data);
+  }
 }
 
 exports.start = async function (params) {
+
   const browser = await puppeteer.launch(params);
   // const context = await browser.createIncognitoBrowserContext();
-
   // const page = await context.newPage();
   const [page] = await browser.pages();
 
-  page.on("response", (response) => {
-
+  page.on("response", response => {
     let code = response.status();
 
     if (code === 555) {
-      console.log("主动中断脚本执行!")
-      process.exit(0)
+      console.log("主动中断脚本执行!");
+      process.exit(0);
     }
-
-  })
+  });
 
   await page.emulate(devices["Nexus 5"]);
 
   const client = await page.target().createCDPSession();
 
-  return new Mobile(browser, page, client);
+
+  //获取代理
+  let proxy;
+  if (params.args) {
+    for (const str of params.args) {
+      if (str.startsWith("--proxy-server=")) {
+        const port = str.split(":")[1]
+        proxy = {
+          host: "127.0.0.1",
+          port
+        }
+        break;
+      }
+    }
+  }
+
+  return new Mobile(browser, page, client, proxy);
 };

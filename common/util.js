@@ -1,15 +1,16 @@
 const fs = require("fs");
 const path = require("path");
 
-exports.random = function(min, max) {
+
+function random(min, max) {
   let num = Math.random() * (max - min) + min;
   if (num == min || num == max) {
     num = random(min, max);
   }
   return num;
-};
+}
 
-exports.info = function() {
+function info() {
   const args = process.argv.splice(2);
 
   const lang = args[0];
@@ -23,7 +24,7 @@ exports.info = function() {
     proxy,
     deviceid
   };
-};
+}
 
 function mkdirs(dirpath, callback) {
   fs.exists(dirpath, function(exists) {
@@ -37,7 +38,7 @@ function mkdirs(dirpath, callback) {
   });
 }
 
-exports.saveFile = function(filePath, content) {
+function saveFile(filePath, content) {
   let dirname = path.dirname(filePath);
 
   mkdirs(dirname, () => {
@@ -47,4 +48,12 @@ exports.saveFile = function(filePath, content) {
       }
     });
   });
+}
+
+
+
+module.exports = {
+  random,
+  saveFile,
+  info,
 };
