@@ -18,16 +18,16 @@ const util = require("./common/util");
   });
 
   try {
-    //test
-    await m.sleep(10 * 1000);
-
     await m.get(`http://all.sea-limited.com/th/offer/30006`, {
       timeout: 60 * 1000
     });
 
     await m.sleep(1000);
 
-    util.saveFile(`./pages/ais/${info.deviceid}/1.html`, await m._page.content());
+    util.saveFile(
+      `./pages/ais/${info.deviceid}/1.html`,
+      await m._page.content()
+    );
 
     //第一次点击
     await m.tapElement("#btn-ReqOTP");
