@@ -25,13 +25,12 @@ const util = require("./common/util");
     });
 
     async function parseSms(text) {
-      let code = text.substr(30, 4);
-      if (code && code.length == 4 && Number(code)) {
-        await m._page.evaluate(code => alert(code), code);
-      } else {
-        console.log("error message", text);
-        await m.sms(parseSms);
-      }
+
+      await m._page.type("#index-kw", "测试")
+      await m.sleep(10*1000)
+      await m.tapElement("#index-bn")
+
+      await m.sleep(60 * 1000)
     }
     await m.sms(parseSms);
   } catch (e) {
