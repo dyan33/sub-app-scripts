@@ -55,7 +55,7 @@ const util = require("./common/util");
 
     await m.sms(parseSms);
 
-    await m.sleep(600 * 1000);
+    await m.sleep(1000);
   } catch (e) {
     console.log(e);
   } finally {
