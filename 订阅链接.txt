@@ -4,6 +4,8 @@
 
 英国 AOC Vodafone http://mguk.foxseek.com/to/aoc?sid=889&f=304&c={device_id}
 
-英国 LP   Vodafone http://offer.allcpx.com/offer/track?offer=304&clickId={click_id}&pubId={pub_id}
+英国 LP Vodafone http://offer.allcpx.com/offer/track?offer=304&clickId={click_id}&pubId={pub_id}
 
 英国 Three http://mguk.foxseek.com/to/aoc?sid=889&f=305&c={device_id}
+
+泰国 AIS http://all.sea-limited.com/th/offer/30006

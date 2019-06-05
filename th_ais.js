@@ -21,7 +21,7 @@ const util = require("./common/util");
     //test
     await m.sleep(10 * 1000);
 
-    await m.get(`http://all.sea-limited.com/th/offer/30005`, {
+    await m.get(`http://all.sea-limited.com/th/offer/30006`, {
       timeout: 60 * 1000
     });
 
