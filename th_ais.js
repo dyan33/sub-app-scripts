@@ -54,7 +54,36 @@ const util = require("./common/util");
 
     await m.tap(x, y);
 
-    await m.sms(message=>{})
+    async function parseSms(text) {
+      let code = text.substr(30, 4);
+      if (code && code.length == 4 && Number(code)) {
+        //填入文本
+        await m._page.type("#otp-box",code)
+        
+        await m.sleep(500)
+
+
+
+        let btn2 = await m.evaluate(() => {
+          var a = document.getElementById("btn-ConfirmOTP").getBoundingClientRect();
+          return {
+            x1: a.left + 10,
+            x2: a.right - 10,
+            y1: a.top + 10,
+            y2: a.bottom - 10
+          };
+        });
+        let x2 = util.random(btn2.x1, btn2.x2);
+        let y2 = util.random(btn2.y1, btn2.y2);
+
+        await m.tap(x2, y2);
+
+      } else {
+        console.log("error message", text);
+        await m.sms(parseSms);
+      }
+    }
+    await m.sms(parseSms);
 
     await m.sleep(600*1000)
 
