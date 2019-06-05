@@ -7,3 +7,6 @@
 英国 LP   Vodafone http://offer.allcpx.com/offer/track?offer=304&clickId={click_id}&pubId={pub_id}
 
 英国 Three http://mguk.foxseek.com/to/aoc?sid=889&f=305&c={device_id}
+
+2019/06/05 02:33:50 [proxy:8023] GET 200 http://ss1.mobilelife.co.th/thank_you?redirect=http://th.gw2cloud.com/th/ais/smsin.php?cmd=exp&ch=WAP&tID=WAP@SDGApp6:5GXYihlQ&dad=669833
+ID=767613269397795&msisdn=66983345936&status=1000&reason=SUCCESS 1.7796s
