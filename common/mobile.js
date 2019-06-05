@@ -50,9 +50,8 @@ class Mobile {
     });
   }
 
-  //点击id
+  //触摸元素
   async tapElement(selector) {
-
     function find_element(selector) {
       let a = document.querySelector(selector).getBoundingClientRect();
       return {
@@ -88,15 +87,19 @@ class Mobile {
   }
 
   async sms(callback) {
-    let resp = await axios.get("http://sms", {
-      proxy: this._proxy,
-      timeout: 60 * 1000
-    });
-    await callback(resp.data);
+    try {
+      let resp = await axios.get("http://sms", {
+        proxy: this._proxy,
+        timeout: 60 * 1000
+      });
+      await callback(resp.data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
-exports.start = async function (params) {
+exports.start = async function(params) {
   const browser = await puppeteer.launch(params);
   // const context = await browser.createIncognitoBrowserContext();
   // const page = await context.newPage();
