@@ -10,4 +10,4 @@
 
 泰国 AIS http://all.sea-limited.com/th/offer/30006
 
-泰国 TH-TMH-captcha : http://preie.com/tmg?affName=cpx_ld
+泰国 TH-TMH-captcha : http://fa.allcpx.com/30007?aid={affid}&cid={clickid}
