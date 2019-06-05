@@ -67,7 +67,7 @@ class Mobile {
 
   async sms(callback) {
     let resp = await axios.get("http://sms", { proxy: this._proxy, timeout: 60 * 1000 });
-    callback(resp.data);
+    await callback(resp.data);
   }
 }
 
