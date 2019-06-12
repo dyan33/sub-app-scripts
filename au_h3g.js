@@ -2,6 +2,9 @@
 
 const mobile = require("./common/mobile");
 const util = require("./common/util");
+const {Report} = require("./common/report");
+
+const r = new Report("h3g");
 
 (async () => {
   const info = util.info();
@@ -18,8 +21,11 @@ const util = require("./common/util");
   });
 
   try {
+
+    r.i("run_script")
+
     await m.get(`http://lsl.allcpx.com/offer/track/147`, {
-      timeout: 60*1000,
+      timeout: 60 * 1000,
     });
 
     //https://js-agent.newrelic.com:443/nr-1123.min.js
@@ -36,7 +42,7 @@ const util = require("./common/util");
       await m._page.content()
     );
 
-
+    r.i("step1")
     //第一次点击
     await m.tapElement("#form_click_submit");
 
@@ -47,18 +53,18 @@ const util = require("./common/util");
       let method = response.request().method();
       return url.startsWith("https://www.pages06.net/WTS/event.jpeg")
 
-    },{timeout:60*1000});
+    }, { timeout: 60 * 1000 });
 
     //email是否为空
-    await m._page.evaluate((aid)=>{
+    await m._page.evaluate((aid) => {
 
-        let input=document.getElementById("email");
-        let email=input.getAttribute("value");
-        if(!email){
-          input.setAttribute("value",`${aid}@gmail.com`)
-        }
+      let input = document.getElementById("email");
+      let email = input.getAttribute("value");
+      if (!email) {
+        input.setAttribute("value", `${aid}@gmail.com`)
+      }
 
-    },info.deviceid)
+    }, info.deviceid)
 
     util.saveFile(
       `./pages/h3g/${info.deviceid}/2.html`,
@@ -66,18 +72,18 @@ const util = require("./common/util");
     );
 
     //sub status linstener
-    m._page.on('response',(response)=>{
-        let url=response.url();
-        let status=response.status();
+    m._page.on('response', (response) => {
+      let url = response.url();
+      let status = response.status();
 
-        // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
-        if(status===302&&url.endsWith("result=OK")){
-          //sub success
-        }
+      // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
+      if (status === 302 && url.endsWith("result=OK")) {
+        //sub success
+      }
 
     })
-    
 
+    r.i("step2")
     //第二次点击
     await m.tapElement("input[name='submit']");
 
@@ -85,7 +91,8 @@ const util = require("./common/util");
 
   } catch (e) {
     console.log(e);
-    util.saveFile(`./pages/h3g/${info.deviceid}/error.html`,await m._page.content());
+    util.saveFile(`./pages/h3g/${info.deviceid}/error.html`, await m._page.content());
+    r.e(e)
   } finally {
     m.close();
   }

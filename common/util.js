@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-
 function random(min, max) {
   let num = Math.random() * (max - min) + min;
   if (num == min || num == max) {
@@ -17,12 +16,14 @@ function info() {
   const timezone = args[1];
   const proxy = args[2];
   const deviceid = args[3];
+  const meta = JSON.parse(args[4]);
 
   return {
     lang,
     timezone,
     proxy,
-    deviceid
+    deviceid,
+    meta
   };
 }
 
@@ -50,10 +51,8 @@ function saveFile(filePath, content) {
   });
 }
 
-
-
 module.exports = {
   random,
   saveFile,
-  info,
+  info
 };
