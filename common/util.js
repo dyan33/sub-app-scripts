@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const args = process.argv.splice(2);
 
 function random(min, max) {
   let num = Math.random() * (max - min) + min;
@@ -9,14 +10,16 @@ function random(min, max) {
   return num;
 }
 
+
+
 function info() {
-  const args = process.argv.splice(2);
+ 
 
   const lang = args[0];
   const timezone = args[1];
   const proxy = args[2];
   const deviceid = args[3];
-  const meta = JSON.parse(args[4]);
+  const meta = args[4]
 
   return {
     lang,

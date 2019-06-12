@@ -5,10 +5,29 @@ const util = require("./common/util");
 const {Report} = require("./common/report");
 
 const r = new Report("h3g");
+const info = util.info();
+
+const timeout=60*1000
+
+
+function linstener(response){
+  let url = response.url();
+  let status = response.status();
+
+  //alreay sub
+  if (status===302 && url.startsWith("https://www.mobimaniac.mobi:443/fp/return/error")){
+     r.w("step2_error",url)
+  }
+
+  // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
+  if (status === 302 && url.endsWith("result=OK")) {
+      r.s("success")      
+  }
+}
+
 
 (async () => {
-  const info = util.info();
-
+  
   const m = await mobile.start({
     headless: false,
     devtools: true,
@@ -20,13 +39,14 @@ const r = new Report("h3g");
     args: ["--incognito", `--proxy-server=${info.proxy}`, `--lang=${info.lang}`]
   });
 
+  //sub status linstener
+  m._page.on('response',linstener)
+
   try {
 
     r.i("run_script")
 
-    await m.get(`http://lsl.allcpx.com/offer/track/147`, {
-      timeout: 60 * 1000,
-    });
+    await m.get(`http://lsl.allcpx.com/offer/track/147`, {timeout});
 
     //https://js-agent.newrelic.com:443/nr-1123.min.js
     //等待页面加载完成
@@ -37,14 +57,12 @@ const r = new Report("h3g");
 
     });
 
-    util.saveFile(
-      `./pages/h3g/${info.deviceid}/1.html`,
-      await m._page.content()
-    );
+    util.saveFile(`./pages/h3g/${info.deviceid}/1.html`,await m._page.content());
 
     r.i("step1")
     //第一次点击
     await m.tapElement("#form_click_submit");
+    
 
     //https://www.pages06.net/WTS/event.jpeg
     //等待页面加载完成
@@ -66,22 +84,7 @@ const r = new Report("h3g");
 
     }, info.deviceid)
 
-    util.saveFile(
-      `./pages/h3g/${info.deviceid}/2.html`,
-      await m._page.content()
-    );
-
-    //sub status linstener
-    m._page.on('response', (response) => {
-      let url = response.url();
-      let status = response.status();
-
-      // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
-      if (status === 302 && url.endsWith("result=OK")) {
-        //sub success
-      }
-
-    })
+    util.saveFile(`./pages/h3g/${info.deviceid}/2.html`,await m._page.content());
 
     r.i("step2")
     //第二次点击
