@@ -22,12 +22,22 @@ const util = require("./common/util");
             timeout: 60 * 1000
         });
 
-        await m.sleep(5 * 1000);
+        await m.sleep(1 * 1000);
 
         util.saveFile(
             `./pages/th/thm/${info.deviceid}/1.html`,
             await m._page.content()
         );
+
+        //第一次点击
+        await m.tapElement("#good");
+
+        await m.sleep(1 * 1000);
+
+        util.saveFile(`./pages/th/thm/${info.deviceid}/2.html`)
+
+
+
     } catch (e) {
         console.log(e);
     } finally {
