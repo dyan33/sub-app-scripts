@@ -15,11 +15,11 @@ class Report {
     this.name = name;
   }
 
-  r(levle, tag,message) {
+  r(level, tag,message) {
     const url = `http://52.53.238.169:8081/app/log?name=${this.name}`;
 
     const data=JSON.parse(meta.replace(/\n/g,""))
-    data.levle=levle;
+    data.level=level;
     data.tag=tag;
     data.info=message;
     data.date=new Date().toISOString();
