@@ -13,10 +13,20 @@ const timeout = 60 * 1000
 function linstener(response) {
   let url = response.url();
   let status = response.status();
+  
+  if(status===302){
+    console.log(302,url)
+  }
 
+<<<<<<< HEAD
   //alreay sub
   if (status === 302 && url.startsWith("https://www.mobimaniac.mobi:443/fp/return/error")) {
     r.w("step2_error", url)
+=======
+  //redirect error
+  if (status===302 && url.startsWith("https://www.mobimaniac.mobi/fp/return/error")){
+     r.w("step1_error",url)
+>>>>>>> 2e652fdd5cc52689b7b7c309ebf60c98f95d9da2
   }
 
   // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
