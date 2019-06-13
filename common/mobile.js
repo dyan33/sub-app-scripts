@@ -109,7 +109,7 @@ exports.start = async function(params) {
     let code = response.status();
 
     if (code === 555) {
-      console.log("主动中断脚本执行!");
+      console.log("proxy chanel already closed!");
       process.exit(0);
     }
   });
