@@ -1,6 +1,5 @@
-const { info, saveFile } = require("../../../common/util");
+const { info, saveFile,logging } = require("../../../common/util");
 const { createMobile } = require("../../../common/mobile");
-
 const { Report } = require("../../../common/report");
 
 
@@ -10,23 +9,30 @@ const name = "j147";
 
 const r = new Report(name);
 
+const logdir = `./pages/h3g/${info.deviceid}/${name}/`
+
+const logger=logging(name,logdir)
+
 
 async function run(page) {
 
   const m = await createMobile(page);
 
+
   //sub status linstener
-  m._page.on('response', (response)=>{
+  m._page.on('response', (response) => {
 
     let url = response.url();
     let status = response.status();
-  
+
+    logger.info(`${response.request().method()}`,status,url);
+
     //跳转订阅页面失败
     if (status === 302 && url.startsWith("https://www.mobimaniac.mobi/fp/return/error")) {
       r.w("failure", url);
       m.close();
     }
-  
+
     // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
     if (status === 302 && url.endsWith("result=OK")) {
       r.s("success")
@@ -47,7 +53,7 @@ async function run(page) {
 
     });
 
-    saveFile(`./pages/h3g/${name}/${info.deviceid}/1.html`, await m._page.content());
+    saveFile(`${logdir}/1.html`, await m._page.content());
 
     r.i("step1")
 
@@ -74,7 +80,7 @@ async function run(page) {
 
     }, info.deviceid)
 
-    saveFile(`./pages/h3g/${name}/${info.deviceid}/2.html`, await m._page.content());
+    saveFile(`${logdir}/2.html`, await m._page.content());
 
     r.i("step2")
 
@@ -87,11 +93,13 @@ async function run(page) {
       return url.startsWith("https://www.mobimaniac.mobi")
     }, { timeout });
 
-    saveFile(`./pages/h3g/${name}/${info.deviceid}/3.html`, await m._page.content());
+    saveFile(`${logdir}/3.html`, await m._page.content());
 
   } catch (e) {
 
-    saveFile(`./pages/h3g/${name}/${info.deviceid}/error.html`, await m._page.content());
+    if(!m._closed){
+      saveFile(`${logdir}/error.html`, await m._page.content());
+    }
 
     r.e("error", e + "")
 

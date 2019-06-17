@@ -25,6 +25,7 @@ class Mobile {
   constructor(page, client) {
     this._page = page;
     this._client = client;
+    this._closed=false;
   }
 
   //屏幕方向
@@ -99,7 +100,10 @@ class Mobile {
 
   //关闭页面
   async close() {
-    await this._page.close();
+    if (!this._closed){
+      await this._page.close();
+      this._closed=true;
+    }
   }
 
   //短信息

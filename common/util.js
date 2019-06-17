@@ -1,5 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+const log4js = require("log4js")
+
 const args = process.argv.splice(2);
 const info = {
   lang: args[0],
@@ -41,8 +43,31 @@ function saveFile(filePath, content) {
   });
 }
 
+function logging(name) {
+
+  log4js.configure({
+    appenders: {
+      j147: { type: "file", filename: `./pages/h3g/${info.deviceid}/j147/run.log` },
+      j156: { type: "file", filename: `./pages/h3g/${info.deviceid}/j156/run.log` }
+    },
+    categories: { 
+      default:{ appenders: ["j147"], level: 'info' },
+      j147: { appenders: ["j147"], level: 'info' },
+      j156: { appenders: ["j156"], level: 'info' },
+     }
+  })
+
+  const logger= log4js.getLogger(name);
+
+  logger.info("");
+  logger.info("");
+
+  return logger;
+}
+
 module.exports = {
   random,
   saveFile,
-  info
+  info,
+  logging
 };
