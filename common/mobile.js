@@ -1,15 +1,31 @@
-const puppeteer = require("puppeteer");
 const devices = require("puppeteer/DeviceDescriptors");
 const process = require("process");
 const axios = require("axios");
-const util = require("./util");
+const { random, info } = require("./util");
+
+const timeout = 60 * 1000;
+
+const proxy = {
+   host: "127.0.0.1",
+    port: str.split(":")[1] 
+  }
+
+const config = {
+  headless: false,
+  devtools: true,
+  ignoreHTTPSErrors: true,
+  env: {
+    TZ: info.timezone,
+    ...process.env
+  },
+  args: ["--incognito", `--proxy-server=${info.proxy}`, `--lang=${info.lang}`]
+}
+
 
 class Mobile {
-  constructor(browser, page, client, proxy) {
-    this._browser = browser;
+  constructor(page, client) {
     this._page = page;
     this._client = client;
-    this._proxy = proxy;
   }
 
   //屏幕方向
@@ -64,8 +80,8 @@ class Mobile {
 
     let btn = await this._page.evaluate(find_element, selector);
 
-    let x = util.random(btn.x1, btn.x2);
-    let y = util.random(btn.y1, btn.y2);
+    let x = random(btn.x1, btn.x2);
+    let y = random(btn.y1, btn.y2);
 
     await this.tap(x, y);
   }
@@ -82,16 +98,15 @@ class Mobile {
     return await this._page.evaluate(func, ...args);
   }
 
+  //关闭页面
   async close() {
-    await this._browser.close();
+    await this._page.close();
   }
 
+  //短信息
   async sms(callback) {
     try {
-      let resp = await axios.get("http://sms", {
-        proxy: this._proxy,
-        timeout: 60 * 1000
-      });
+      let resp = await axios.get("http://sms", { proxy, timeout });
       await callback(resp.data);
     } catch (e) {
       console.log(e);
@@ -99,16 +114,11 @@ class Mobile {
   }
 }
 
-exports.start = async function(params) {
-  const browser = await puppeteer.launch(params);
-  // const context = await browser.createIncognitoBrowserContext();
-  // const page = await context.newPage();
-  const [page] = await browser.pages();
+async function createMobile(page){
 
+  //通道关闭监听
   page.on("response", response => {
-    let code = response.status();
-
-    if (code === 555) {
+    if ( response.status() === 555) {
       console.log("proxy chanel already closed!");
       process.exit(0);
     }
@@ -118,20 +128,10 @@ exports.start = async function(params) {
 
   const client = await page.target().createCDPSession();
 
-  //获取代理
-  let proxy;
-  if (params.args) {
-    for (const str of params.args) {
-      if (str.startsWith("--proxy-server=")) {
-        const port = str.split(":")[1];
-        proxy = {
-          host: "127.0.0.1",
-          port
-        };
-        break;
-      }
-    }
-  }
+  return new Mobile(page, client);
+}
 
-  return new Mobile(browser, page, client, proxy);
-};
+module.exports={
+  config,
+  createMobile
+}

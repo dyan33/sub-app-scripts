@@ -1,14 +1,12 @@
 //奥地利a1
 
 const mobile = require("./common/mobile");
-const util = require("./common/util");
+const {saveFile,info} = require("./common/util");
 const { Report } = require("./common/report");
 
 const r = new Report("h3g");
-const info = util.info();
 
 const timeout = 60 * 1000
-
 
 function linstener(response) {
   let url = response.url();
@@ -48,7 +46,7 @@ function linstener(response) {
     await m._page.waitForSelector("#vasb-fagg-input",{timeout});
 
     //保存页面
-    util.saveFile(`./pages/a1/${info.deviceid}/1.html`, await m._page.content());
+    saveFile(`./pages/a1/${info.deviceid}/1.html`, await m._page.content());
 
     //勾选
     await m.evaluate(()=>{document.querySelector("#vasb-fagg-input").setAttribute('value',true)})
@@ -58,14 +56,15 @@ function linstener(response) {
     //点击订阅按钮
     await m.tapElement("button[name='confirm']")
     
-
     await m.sleep(timeout)
+
+    saveFile(`./pages/a1/${info.deviceid}/2.html`, await m._page.content());
 
     await r.i("end")
 
   } catch (e) {
     console.log(e);
-    util.saveFile(`./pages/a1/${info.deviceid}/error.html`, await m._page.content());
+    saveFile(`./pages/a1/${info.deviceid}/error.html`, await m._page.content());
     r.e(e)
   } finally {
     m.close();

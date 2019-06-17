@@ -1,12 +1,12 @@
 const axios = require("axios");
-const util = require("./util");
+const {info} = require("./util");
 
 const ERROR = "ERROR";
 const WARNING = "WARNING";
 const INFO = "INFO";
 const SUCCESS = "SUCCESS";
 
-const info = util.info();
+
 const meta = info.meta;
 
 
