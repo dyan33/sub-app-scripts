@@ -1,5 +1,8 @@
 const { info, saveFile } = require("../../../common/util");
+const { createMobile } = require("../../../common/mobile");
+
 const { Report } = require("../../../common/report");
+
 
 const timeout = 60 * 1000;
 
@@ -8,29 +11,27 @@ const name = "j147";
 const r = new Report(name);
 
 
-function linstener(response) {
-  let url = response.url();
-  let status = response.status();
+async function run(page) {
 
-  //跳转订阅页面失败
-  if (status === 302 && url.startsWith("https://www.mobimaniac.mobi:443/fp/return/error")) {
-
-    r.w("failure", url)
-
-  }
-
-  // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
-  if (status === 302 && url.endsWith("result=OK")) {
-
-    r.s("success")
-
-  }
-}
-
-async function run(m) {
+  const m = await createMobile(page);
 
   //sub status linstener
-  m._page.on('response', linstener)
+  m._page.on('response', (response)=>{
+
+    let url = response.url();
+    let status = response.status();
+  
+    //跳转订阅页面失败
+    if (status === 302 && url.startsWith("https://www.mobimaniac.mobi/fp/return/error")) {
+      r.w("failure", url);
+      m.close();
+    }
+  
+    // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
+    if (status === 302 && url.endsWith("result=OK")) {
+      r.s("success")
+    }
+  })
 
   try {
 

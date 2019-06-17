@@ -7,7 +7,7 @@ const timeout = 60 * 1000;
 
 const proxy = {
    host: "127.0.0.1",
-    port: str.split(":")[1] 
+    port: info.proxy.split(":")[1] 
   }
 
 const config = {
@@ -20,7 +20,6 @@ const config = {
   },
   args: ["--incognito", `--proxy-server=${info.proxy}`, `--lang=${info.lang}`]
 }
-
 
 class Mobile {
   constructor(page, client) {
@@ -114,6 +113,11 @@ class Mobile {
   }
 }
 
+async function newWindow(browser){
+  const context = await browser.createIncognitoBrowserContext();
+  return await context.newPage();
+}
+
 async function createMobile(page){
 
   //通道关闭监听
@@ -133,5 +137,6 @@ async function createMobile(page){
 
 module.exports={
   config,
-  createMobile
+  createMobile,
+  newWindow
 }

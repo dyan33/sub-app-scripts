@@ -1,42 +1,40 @@
-//奥地利h3g
-
 const { info, saveFile } = require("../../../common/util");
 const { Report } = require("../../../common/report");
+const { createMobile } = require("../../../common/mobile");
 
 const timeout = 60 * 1000;
 
-const r = new Report("j155");
+const name = "j156";
 
+const r = new Report(name);
 
-function linstener(response) {
-  let url = response.url();
-  let status = response.status();
+async function run(page) {
 
-  //alreay sub
-  if (status === 302 && url.startsWith("https://www.mobimaniac.mobi:443/fp/return/error")) {
-
-    r.w("failure", url)
-
-  }
-
-  // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
-  if (status === 302 && url.endsWith("result=OK")) {
-
-    r.s("success")
-
-  }
-}
-
-async function run(m) {
+  const m=await createMobile(page);
 
   //sub status linstener
-  m._page.on('response', linstener)
+  m._page.on('response', (response)=>{
+
+    let url = response.url();
+    let status = response.status();
+
+    //跳转订阅页面失败
+    if (status === 302 && url.startsWith("https://www.brickoffers.com/fp/return/error")) {
+      r.w("failure", url);
+      m.close();
+    }
+
+    // http://pgw.wap.net-m.net/pgw/io/cp/reply0uupc/89/1589530504?result=OK
+    if (status === 302 && url.endsWith("result=OK")) {
+      r.s("success")
+    }
+  })
 
   try {
 
     r.i("start")
 
-    await m.get(`http://lsl.allcpx.com/offer/track/147`, { timeout });
+    await m.get(`http://lsl.allcpx.com/offer/track/156`, { timeout });
 
     //等待页面加载完成
     await m._page.waitForResponse(response => {
@@ -46,7 +44,7 @@ async function run(m) {
 
     });
 
-    saveFile(`./pages/h3g/${info.deviceid}/1.html`, await m._page.content());
+    saveFile(`./pages/h3g/${name}/${info.deviceid}/1.html`, await m._page.content());
 
     r.i("step1")
 
@@ -73,7 +71,7 @@ async function run(m) {
 
     }, info.deviceid)
 
-    saveFile(`./pages/h3g/at/${info.deviceid}/2.html`, await m._page.content());
+    saveFile(`./pages/h3g/${name}/${info.deviceid}/2.html`, await m._page.content());
 
     r.i("step2")
 
@@ -86,11 +84,11 @@ async function run(m) {
       return url.startsWith("https://www.mobimaniac.mobi")
     }, { timeout });
 
-    saveFile(`./pages/h3g/at/${info.deviceid}/3.html`, await m._page.content());
+    saveFile(`./pages/h3g/${name}/${info.deviceid}/3.html`, await m._page.content());
 
   } catch (e) {
 
-    saveFile(`./pages/h3g/at/${info.deviceid}/error.html`, await m._page.content());
+    saveFile(`./pages/h3g/${name}/${info.deviceid}/error.html`, await m._page.content());
 
     r.e("error", e + "")
 
