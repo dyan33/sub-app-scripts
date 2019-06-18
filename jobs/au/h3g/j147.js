@@ -1,17 +1,13 @@
-const { info, saveFile,logging } = require("../../../common/util");
 const { createMobile } = require("../../../common/mobile");
-const { Report } = require("../../../common/report");
+const { info, saveFile,logging,timeout,reporter } = require("../../../common/util");
 
-
-const timeout = 60 * 1000;
 
 const name = "j147";
+const logdir = `./logs/au/h3g/${info.deviceid}/${name}/`;
 
-const r = new Report(name);
+const r = new reporter(name);
+const logger=logging(name,logdir);
 
-const logdir = `./pages/h3g/${info.deviceid}/${name}/`
-
-const logger=logging(name,logdir)
 
 
 async function run(page) {
