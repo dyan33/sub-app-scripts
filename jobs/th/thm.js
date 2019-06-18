@@ -9,6 +9,9 @@ const logdir = `./logs/th/thm/${info.deviceid}/${name}`;
 const r = reporter(name);
 const logger=logging(name,logdir);
 
+logger.info("-");
+logger.info("-");
+
 async function run(page) {
 
   const m=await createMobile(page);
@@ -29,17 +32,19 @@ async function run(page) {
 
     await m.get(`http://fa.allcpx.com/30007?aid=${info.deviceid}&cid={clickid}`, { timeout });
 
-    await m.sleep(2 * 1000);
+    await m.sleep(10 * 1000);
 
-    util.saveFile(`${logdir}/1.html`,await m._page.content());
+    saveFile(`${logdir}/1.html`,await m._page.content());
 
+    logger.info("click1");
+    
     r.i("click_1")
     //第一次点击
-    await m.tapElement("#good"); 
+    await m.tapElement("#goood"); 
 
     await m.sleep(5 * 1000);
 
-    util.saveFile(`${logdir}/2.html`,await m._page.content());
+    saveFile(`${logdir}/2.html`,await m._page.content());
     
     r.i("end")
 

@@ -8,6 +8,9 @@ const logdir = `./logs/au/h3g/${info.deviceid}/${name}`;
 const r = reporter(name);
 const logger=logging(name,logdir);
 
+logger.info("-");
+logger.info("-");
+
 async function run(page) {
 
   const m=await createMobile(page);
