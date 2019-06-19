@@ -25,7 +25,6 @@ class Mobile {
   constructor(page, client) {
     this._page = page;
     this._client = client;
-    this._closed=false;
 
     this._page.setDefaultTimeout(timeout);
 
@@ -103,9 +102,8 @@ class Mobile {
 
   //关闭页面
   async close() {
-    if (!this._closed){
+    if (!this._page.isClosed()){
       await this._page.close();
-      this._closed=true;
     }
   }
 

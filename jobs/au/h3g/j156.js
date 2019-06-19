@@ -93,7 +93,7 @@ async function run(page) {
 
   } catch (e) {
 
-    if(!m._closed){
+    if (!m._page.isClosed()){
       saveFile(`${logdir}/error.html`, await m._page.content());
     }
 
