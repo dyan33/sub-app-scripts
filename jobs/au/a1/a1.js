@@ -8,9 +8,6 @@ const logdir = `./logs/au/a1/${info.deviceid}`;
 const r = reporter(name);
 const logger = logging(name, logdir);
 
-logger.info("-");
-logger.info("-");
-
 
 (async () => {
 
@@ -24,7 +21,9 @@ logger.info("-");
         let url = response.url();
         let status = response.status();
 
-        logger.info(`${response.request().method()}`,status,url)
+        if(url.startsWith("http")){
+            logger.info(`${response.request().method()}`,status,url)
+        }
 
         if (url.startsWith("http://at.ifunnyhub.com")) {
             r.s("success")
@@ -37,9 +36,12 @@ logger.info("-");
 
     })
 
+    //开始
     try {
 
         r.i("start")
+
+        logger.info("start");
 
         await m.get(`http://nat.allcpx.com/sub/start?affName=DCG&type=at_ifunny_155&clickId=${info.deviceid}`, { timeout });
 
@@ -49,7 +51,6 @@ logger.info("-");
         
         await m.sleep(1*1000)
 
-
         //保存页面
         saveFile(`${logdir}/1.html`, await m._page.content());
 
@@ -58,13 +59,18 @@ logger.info("-");
 
         await r.i("sub_click")
 
+        logger.info("click")
+
         //点击订阅按钮
         await m.tapElement("button[name='confirm']")
 
-        await m.sleep(10 * 1000)
+        //等待测试
+        await m.sleep(120 * 1000)
 
         saveFile(`${logdir}/2.html`, await m._page.content());
 
+        logger.info("end")
+        
         await r.i("end")
 
     } catch (e) {
