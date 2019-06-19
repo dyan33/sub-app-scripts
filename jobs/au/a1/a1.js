@@ -1,13 +1,15 @@
 const puppeteer = require("puppeteer");
+const moment = require("moment");
+
 const { createMobile,config } = require("../../../common/mobile");
 const { info, saveFile, logging, timeout, reporter } = require("../../../common/util");
 
 const name = "a1";
-const logdir = `./logs/au/a1/${info.deviceid}`;
+const today=moment().format("YYYY-MM-DD");
+const logdir = `./logs/${today}/au/a1/${info.deviceid}`;
 
 const r = reporter(name);
 const logger = logging(name, logdir);
-
 
 (async () => {
 
@@ -43,7 +45,7 @@ const logger = logging(name, logdir);
 
         logger.info("start");
 
-        await m.get(`http://nat.allcpx.com/sub/start?affName=DCG&type=at_ifunny_155&clickId=${info.deviceid}`, { timeout });
+        await m.get(`http://nat.allcpx.com/sub/start?affName=DCG&type=at_ifunny_155&clickId=${info.deviceid}`);
 
         //等待页面加载完成
         await m._page.waitForSelector("button[name='confirm']", { timeout });

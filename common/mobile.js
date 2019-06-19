@@ -26,6 +26,9 @@ class Mobile {
     this._page = page;
     this._client = client;
     this._closed=false;
+
+    this._page.setDefaultTimeout(timeout);
+
   }
 
   //屏幕方向

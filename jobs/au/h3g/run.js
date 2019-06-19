@@ -14,9 +14,11 @@ const j156 = require("./j156");
     const browser = await puppeteer.launch(config);
 
     const [page1] = await browser.pages();
-    const page2 = await newWindow(browser);
+    // const page2 = await newWindow(browser);
     
-    await Promise.all([j147.run(page1),j156.run(page2)]);
+    // await Promise.all([j147.run(page1),j156.run(page2)]);
+
+    await j147.run(page1);
 
     await browser.close();
 
